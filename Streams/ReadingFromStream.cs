@@ -1,4 +1,5 @@
 using System.Text;
+#pragma warning disable
 
 namespace Streams
 {
@@ -6,26 +7,62 @@ namespace Streams
     {
         public static string ReadAllStreamContent(StreamReader streamReader)
         {
-            // TODO #4-1. Implement the method by reading all content as a string.
-            throw new NotImplementedException();
+            return streamReader.ReadToEnd();
         }
 
         public static string[] ReadLineByLine(StreamReader streamReader)
         {
-            // TODO #4-2. Implement the method by reading lines of characters as a string array.
-            throw new NotImplementedException();
+            List<string> lines = new List<string>();
+
+            string line;
+            while ((line = streamReader.ReadLine()) != null)
+            {
+                lines.Add(line);
+            }
+
+            return lines.ToArray();
         }
 
         public static StringBuilder ReadOnlyLettersAndNumbers(StreamReader streamReader)
         {
-            // TODO #4-3. Implement the method by reading only letters and numbers, and write the characters to a StringBuilder.
-            throw new NotImplementedException();
+            StringBuilder stringBuilder = new StringBuilder();
+
+            int character;
+            while ((character = streamReader.Read()) != -1)
+            {
+                if (char.IsLetterOrDigit((char)character))
+                {
+                    stringBuilder.Append((char)character);
+                }
+            }
+
+            return stringBuilder;
         }
 
         public static char[][] ReadAsCharArrays(StreamReader streamReader, int arraySize)
         {
-            // TODO #4-4. Implement the method by returning an underlying string that sliced into jagged array of characters according to arraySize.
-            throw new NotImplementedException();
+            string text = streamReader.ReadToEnd().Trim();
+
+            int length = text.Length;
+            int rows = (length + arraySize - 1) / arraySize;
+
+            char[][] charArrays = new char[rows][];
+
+            for (int row = 0; row < rows; row++)
+            {
+                int startIndex = row * arraySize;
+                int endIndex = Math.Min(startIndex + arraySize, length);
+                int rowLength = endIndex - startIndex;
+
+                charArrays[row] = new char[rowLength];
+
+                for (int i = startIndex, j = 0; i < endIndex; i++, j++)
+                {
+                    charArrays[row][j] = text[i];
+                }
+            }
+
+            return charArrays;
         }
     }
 }
